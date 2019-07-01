@@ -1,0 +1,34 @@
+<div id="wrapper">
+    <div id="content">
+      
+  
+      <form class="login-form-container align-center" [formGroup]="loginForm">
+          <div class="item">
+            <input required formControlName="username" />      
+            <span *ngIf="loginForm.controls['username'].errors && (loginForm.controls['username'].touched || !loginForm.controls['username'].pristine)" class="error-msg">
+                {{validationMessage.username.required}}
+            </span>
+          </div>
+          
+  
+        <div class="item">
+          <input required type="password" formControlName="password" />
+          <span *ngIf="loginForm.controls['password'].errors && (loginForm.controls['password'].touched || !loginForm.controls['password'].pristine)" class="error-msg">
+            {{validationMessage.password.required}}
+          </span>
+        </div>
+      
+        <button class="login-button" [disabled]="loginForm.invalid" (click)="authenticate()">Sign up / Log in</button>
+      </form>
+
+      <div class="text-box heading-primary">
+            <p class="mat-body-1 text">By signing up, you agree to the Terms of 
+                    Service and Privacy Policy, including Cookie
+                    Use. Others will be able to find you by
+                    searching for your email address or phone 
+                    number when provided.</p>
+          </div>
+      
+    </div>
+  </div>
+  

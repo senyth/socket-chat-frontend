@@ -1,0 +1,136 @@
+/*------------------------------------------------------------ 
+Description:    CSS for Login Page
+Developer:      Babie Entoma
+Date:           06/29/2019
+-------------------------------------------------------------- */
+
+/* Variables */
+$text-color: #fafafa;
+
+#wrapper {
+    background: linear-gradient(to right, #96bbb8, #2a968c);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    color: $text-color;
+    font-weight: 300;
+}
+
+.logo-box {
+    width: 100%;
+    padding-bottom: 2.8rem;
+}
+
+.logo  {
+    margin: 0 auto;
+    display: block;
+    width: 50%;
+}
+
+.text-box {
+    text-align: center;
+    padding-bottom: 2rem;
+}
+
+.heading-primary {
+    color: $text-color;
+    width: 70%;
+    margin: 0 auto;
+    letter-spacing: .02rem;
+}
+
+.login-form-container {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin: 0 auto;
+    height: auto;
+}
+
+.login-button {
+    text-align: center;
+    display: block;
+    width: 100%;
+    margin-top: 20px; 
+    padding: 5px 0px;
+    text-transform: uppercase;
+}
+
+mat-label, mat-icon {
+    color: $text-color;
+    font-weight: 300;
+}
+
+mat-form-field, mat-checkbox{
+    padding: 5px;
+    display: block;
+}
+
+.mat-checkbox-inner-container {
+    display: inline-block;
+    height: 14px;
+    line-height: 0;
+    margin-right: 8px;
+    order: 0;
+    position: relative;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 14px;
+    flex-shrink: 0;
+}
+
+mat-icon {
+    margin-right: 10px;
+}
+
+/* Fluid typography */
+@mixin responsive-font($responsive, $min, $max: false, $fallback: false) {
+    $responsive-unitless: $responsive / ($responsive - $responsive + 1);
+    $dimension: if(unit($responsive) == 'vh', 'height', 'width');
+    $min-breakpoint: $min / $responsive-unitless * 100;
+    
+    @media (max-#{$dimension}: #{$min-breakpoint}) {
+      font-size: $min;
+      line-height: 1.3;
+    }
+    
+    @if $max {
+      $max-breakpoint: $max / $responsive-unitless * 100;
+      
+      @media (min-#{$dimension}: #{$max-breakpoint}) {
+        font-size: $max;
+        line-height: 1.5;
+      }
+    }
+    
+    @if $fallback {
+      font-size: $fallback;
+    }
+    
+    font-size: $responsive;
+  }
+
+  .heading {
+    @include responsive-font(3vw, 24px, 40px);
+  }
+
+  .text {
+    font-weight: 300;
+    color: $text-color;
+    @include responsive-font(2vw, 12px, 16px);
+  }
+
+  
