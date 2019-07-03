@@ -17,6 +17,7 @@ export class ChatComponent implements OnInit {
   chatArray = [];
   chatForm: FormGroup;
   loadedAllChats = false;
+  currentUserId: string;
 
   constructor(
     private chatService: ChatService,
@@ -43,6 +44,7 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.currentUserId = localStorage.getItem('user_id');
     this.populateChat();
     this.createForm();
   }
@@ -52,6 +54,7 @@ export class ChatComponent implements OnInit {
       (res: APIResponse) => {
         if (res.success) {
           this.chatArray = res.data;
+          console.log(this.chatArray);
         }
         this.loadedAllChats = true;
       },
@@ -71,7 +74,7 @@ export class ChatComponent implements OnInit {
     console.log('send message');
 
     const chat: Chat = {
-      user_id: localStorage.getItem('id'),
+      user_id: localStorage.getItem('user_id'),
       message: this.chatForm.value.message,
       timestamp: new Date(),
       dis: true

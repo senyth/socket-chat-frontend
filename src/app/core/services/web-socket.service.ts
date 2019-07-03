@@ -20,6 +20,7 @@ export class WebSocketService {
     const observable = new Observable<{ user: string, message: string}>(observer => {
       this.socket.on('new message', (data) => {
         console.log('message received from backend');
+        console.log(data);
         observer.next(data);
       });
       return () => {

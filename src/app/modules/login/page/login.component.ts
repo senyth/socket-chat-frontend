@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
       password: formVal.password
     };
 
-    this.authService.authenticate({credentials: user}).subscribe(
+    this.authService.authenticate(user).subscribe(
       (res: APIResponse) => {
        if (res.data.success === true) {
         this.router.navigate(['/']); // let user access the system if credentials are correct

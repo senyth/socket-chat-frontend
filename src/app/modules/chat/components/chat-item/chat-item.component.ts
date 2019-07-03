@@ -7,12 +7,12 @@ import { Chat } from 'src/app/core/models/chat';
   styleUrls: ['./chat-item.component.scss']
 })
 export class ChatItemComponent implements OnInit {
-
   @Input() chat: Chat;
 
   constructor() { }
 
   ngOnInit() {
+
   }
 
 }

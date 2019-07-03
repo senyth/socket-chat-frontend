@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { APIResponse } from '../../models/api-response';
 import { ApiService } from '../api.service';
+import { User } from '../../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -49,15 +50,16 @@ export class AuthService {
    * @return        none
    * @author        Babie Entoma
    */
-  authenticate(credentials: any): Observable<APIResponse> {
-    console.log(credentials);
-    return this.api.post(`/auth/users/authenticate`, {credentials})
+  authenticate(user: User): Observable<APIResponse> {
+    console.log(user);
+    return this.api.post(`/auth/users/authenticate`, {credentials: user})
     .pipe(tap(res => {
-      if (res.data.success === true) {
+      console.log(res);
+      if (res.data.success) {
         console.log(res.data);
         localStorage.setItem('id_token', res.data.token);
         localStorage.setItem('username', res.data.user.username);
-        localStorage.setItem('id', res.data.user._id);
+        localStorage.setItem('user_id', res.data.user._id);
       }
     }));
   }
