@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,7 @@ export class WebSocketService {
   newMessageReceived() {
     const observable = new Observable<{ user: string, message: string}>(observer => {
       this.socket.on('new message', (data) => {
+        console.log('message received from backend');
         observer.next(data);
       });
       return () => {

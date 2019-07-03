@@ -54,7 +54,10 @@ export class AuthService {
     return this.api.post(`/auth/users/authenticate`, {credentials})
     .pipe(tap(res => {
       if (res.data.success === true) {
+        console.log(res.data);
         localStorage.setItem('id_token', res.data.token);
+        localStorage.setItem('username', res.data.user.username);
+        localStorage.setItem('id', res.data.user._id);
       }
     }));
   }
@@ -100,7 +103,7 @@ export class AuthService {
    * @author        Babie Entoma
    */
   public logout() {
-    localStorage.removeItem('id_token');
+    // localStorage.removeItem('id_token');
 
     localStorage.clear();
     this.router.navigate(['/login']);

@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { WebSocketService } from 'src/app/core/services/web-socket.service';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Chat } from 'src/app/core/models/chat';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { ChatService } from 'src/app/core/services/chat.service';
+import { APIResponse } from 'src/app/core/models/api-response';
 
 @Component({
   selector: 'app-chat',
@@ -8,22 +14,70 @@ import { WebSocketService } from 'src/app/core/services/web-socket.service';
 })
 export class ChatComponent implements OnInit {
 
-  messageArray: Array<{user: string, message: string}> = [];
+  chatArray = [];
+  chatForm: FormGroup;
+  loadedAllChats = false;
+
   constructor(
+    private chatService: ChatService,
     private webSocketService: WebSocketService,
+    private fb: FormBuilder,
+    private router: Router
   ) {
     this.webSocketService.newMessageReceived().subscribe(data => {
-      this.messageArray.push(data);
+      this.chatArray.push(data);
+      console.log(this.chatArray);
       // this.isTyping = false;
     });
   }
 
+  /**
+   * Instantiate the chat form
+   * @return        void
+   * @author        Babie Entoma
+   */
+  private createForm() {
+    this.chatForm = this.fb.group({
+      message: new FormControl('', Validators.required)
+    });
+  }
+
   ngOnInit() {
+    this.populateChat();
+    this.createForm();
+  }
+
+  populateChat() {
+    this.chatService.getAllChats().subscribe(
+      (res: APIResponse) => {
+        if (res.success) {
+          this.chatArray = res.data;
+        }
+        this.loadedAllChats = true;
+      },
+      (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          alert('An error occurred: ' + err.error.message);
+        } else {
+          alert(`Backend returned code ${err.status} body was: ${err.error}`);
+
+          this.router.navigate(['/login']);
+        }
+     }
+   );
   }
 
   sendMessage() {
     console.log('send message');
-    this.webSocketService.sendMessage({user: '5d1ae65afad4e91f27b60afc', message: 'sample message'});
+
+    const chat: Chat = {
+      user_id: localStorage.getItem('id'),
+      message: this.chatForm.value.message,
+      timestamp: new Date(),
+      dis: true
+    };
+
+    this.webSocketService.sendMessage(chat);
     // this.message = '';
   }
 

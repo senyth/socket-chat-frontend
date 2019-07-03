@@ -59,7 +59,7 @@ export class ApiService {
    * @returns   Observable that holds the response from the API
    * @author    Babie Entoma
    */
-  put(path: string, body: Object = {}, option: Object = {}): Observable<APIResponse> {
+  put(path: string, body: object = {}, option: object = {}): Observable<APIResponse> {
     return this.http.put<APIResponse>( `${environment.api_url}${path}`, JSON.stringify(body), option)
       .pipe(catchError(this.handleError));
   }
@@ -71,14 +71,9 @@ export class ApiService {
    * @returns   Observable that holds the response from the API
    * @author    Babie Entoma
    */
-  post(path: string, body: object = {}, options?: Object): Observable<APIResponse> {
-    if (options !== 'font') {
+  post(path: string, body: object = {}, options?: object): Observable<APIResponse> {
       return this.http.post<APIResponse>(`${environment.api_url}${path}`, JSON.stringify(body))
       .pipe(catchError(this.handleError));
-    } else {
-      return this.http.post<APIResponse>(`${environment.api_url}${path}`, body)
-      .pipe(catchError(this.handleError));
-    }
   }
 
   /**

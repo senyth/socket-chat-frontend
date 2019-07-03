@@ -11,6 +11,7 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 import { ValidationMessages } from '../shared/login-validation-messages';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { User } from 'src/app/core/models/user';
 
 interface APIResponse {
   data: {
@@ -48,8 +49,7 @@ export class LoginComponent implements OnInit {
 
   /**
    * Instantiate the login form
-   * @param         none
-   * @return        none
+   * @return        void
    * @author        Babie Entoma
    */
   private createForm() {
@@ -65,21 +65,17 @@ export class LoginComponent implements OnInit {
 
   /**
    *  Authenticates user input. Login user if successful and save token. Else, display error message.
-   * @param         none
    * @return        none
    * @author        Babie Entoma
    */
   public authenticate() {
     const formVal = this.loginForm.value;
-
-    const credentials = {
+    const user: User = {
       username: formVal.username,
       password: formVal.password
     };
 
-    console.log(credentials);
-
-    this.authService.authenticate(credentials).subscribe(
+    this.authService.authenticate({credentials: user}).subscribe(
       (res: APIResponse) => {
        if (res.data.success === true) {
         this.router.navigate(['/']); // let user access the system if credentials are correct
