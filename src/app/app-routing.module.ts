@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: 'chat',
     loadChildren: './modules/chat/chat.module#ChatModule',
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   }
 ];
 

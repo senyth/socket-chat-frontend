@@ -55,12 +55,9 @@ export class AuthService {
    * @author        Babie Entoma
    */
   authenticate(user: User): Observable<APIResponse> {
-    console.log(user);
     return this.api.post(`/auth/users/authenticate`, {credentials: user})
     .pipe(tap((res: APIResponse) => {
-      console.log(res);
       if (res.success) {
-        console.log(res.data);
         localStorage.setItem('id_token', res.data.token);
         localStorage.setItem('username', res.data.user.username);
         localStorage.setItem('user_id', res.data.user._id);
