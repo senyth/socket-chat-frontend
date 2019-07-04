@@ -12,14 +12,7 @@ import { ValidationMessages } from '../shared/login-validation-messages';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from 'src/app/core/models/user';
-
-interface APIResponse {
-  data: {
-    user: any;
-    token: string;
-    success: boolean;
-  };
-}
+import { APIResponse } from 'src/app/core/models/api-response';
 
 @Component({
   selector: 'app-login',
@@ -77,11 +70,13 @@ export class LoginComponent implements OnInit {
 
     this.authService.authenticate(user).subscribe(
       (res: APIResponse) => {
-       if (res.data.success === true) {
-        this.router.navigate(['/']); // let user access the system if credentials are correct
-       } else {
-         alert(ValidationMessages.invalidLogin);
-       }
+        console.log(res);
+        if (res.success) {
+          console.log('true');
+          this.router.navigate(['/']); // let user access the system if credentials are correct
+        } else {
+          alert(ValidationMessages.invalidLogin);
+        }
       },
       (err: HttpErrorResponse) => {
         if (err.error instanceof Error) {

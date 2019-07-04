@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { WebSocketService } from 'src/app/core/services/web-socket.service';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Chat } from 'src/app/core/models/chat';
@@ -6,6 +6,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ChatService } from 'src/app/core/services/chat.service';
 import { APIResponse } from 'src/app/core/models/api-response';
+import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
 
 @Component({
   selector: 'app-chat',
@@ -13,11 +14,21 @@ import { APIResponse } from 'src/app/core/models/api-response';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-
   chatArray = [];
   chatForm: FormGroup;
   loadedAllChats = false;
   currentUserId: string;
+  @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
+  @ViewChild('scrollMe', {static: false}) scrollDiv: ElementRef;
+
+  // keyboard listener for "Enter"
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === 'Enter' && this.chatForm.valid) {
+        this.sendMessage();
+    }
+  }
+
 
   constructor(
     private chatService: ChatService,
@@ -29,6 +40,8 @@ export class ChatComponent implements OnInit {
       this.chatArray.push(data);
       console.log(this.chatArray);
       // this.isTyping = false;
+
+      this.scrollToBottom(this.scrollDiv.nativeElement.scrollHeight);
     });
   }
 
@@ -70,6 +83,10 @@ export class ChatComponent implements OnInit {
    );
   }
 
+  scrollToBottom(yScrollHeight: number) {
+    this.componentRef.directiveRef.scrollTo(0, yScrollHeight, 500);
+  }
+
   sendMessage() {
     console.log('send message');
 
@@ -81,7 +98,7 @@ export class ChatComponent implements OnInit {
     };
 
     this.webSocketService.sendMessage(chat);
-    // this.message = '';
+    this.chatForm.patchValue({message: ''});
   }
 
 }

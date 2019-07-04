@@ -5,7 +5,7 @@ import { AuthGuard } from './core/services/auth/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/chat', 
+    redirectTo: '/chat',
     pathMatch: 'full',
     canActivate: [AuthGuard]
   },
@@ -15,7 +15,8 @@ const routes: Routes = [
   },
   {
     path: 'chat',
-    loadChildren: './modules/chat/chat.module#ChatModule'
+    loadChildren: './modules/chat/chat.module#ChatModule',
+    // canActivate: [AuthGuard]
   }
 ];
 

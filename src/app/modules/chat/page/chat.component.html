@@ -1,16 +1,18 @@
 <div id="wrapper" *ngIf="loadedAllChats">
     <!-- <div id="status"></div> -->
-    <div id="chat-messages-wrapper">
-        <div class="message" *ngFor="let chat of chatArray" 
-                [class.sent]="chat.user_id === currentUserId"
-                [class.received]="chat.user_id !== currentUserId">
-            <app-chat-item [chat]="chat"></app-chat-item>
+    <perfect-scrollbar style="max-width: auto; max-height: auto">
+        <div id="chat-messages-wrapper" #scrollMe>
+            <div class="message" *ngFor="let chat of chatArray" 
+                    [class.sent]="chat.user_id === currentUserId"
+                    [class.received]="chat.user_id !== currentUserId">
+                <app-chat-item [chat]="chat"></app-chat-item>
+            </div>
         </div>
-    </div>
+    </perfect-scrollbar>
     <div id="chat-form-wrapper">
         <form [formGroup]="chatForm">
-            <textarea id="textarea" formControlName="message" class="form-control" placeholder="Enter message..."></textarea>
-            <button (click)="sendMessage()">Send</button>
+            <textarea id="textarea" formControlName="message" class="form-control" placeholder="Enter message..." rows="2"></textarea>
+            <button (click)="sendMessage()" [disabled]="!chatForm.valid">Send</button>
         </form>
     </div>
 </div>
