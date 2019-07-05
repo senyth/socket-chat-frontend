@@ -8,10 +8,12 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthService } from './core/services/auth/auth.service';
 import { AuthGuard } from './core/services/auth/auth.guard';
 import { Interceptor } from './core/helpers/interceptor';
+import { HeaderComponent } from './core/header/header.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

@@ -5,7 +5,10 @@
             <div class="message" *ngFor="let chat of chatArray" 
                     [class.sent]="chat.user_id === currentUserId"
                     [class.received]="chat.user_id !== currentUserId">
-                <app-chat-item [chat]="chat"></app-chat-item>
+                <!-- <app-chat-item [chat]="chat"></app-chat-item> -->
+                <div class="chat">
+                    <p>{{chat.message}}</p>
+                </div>
             </div>
         </div>
     </perfect-scrollbar>

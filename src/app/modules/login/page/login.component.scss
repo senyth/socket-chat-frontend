@@ -15,29 +15,24 @@ Date:           06/29/2019
 // #1C2130
 // #343838
 
-/* Variables */
-$text-color: #303030;
-$primary-color: #008C9E;
-$error-color: #D14334;
+@import 'src/sass/variables';
 
 
 #wrapper {
-  background-color: #fafafa;
-  position: absolute;
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
+  // top: 0;
+  // left: 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
-  justify-content: center;
+  // justify-content: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  display: flex;
+  // display: flex;
   flex-direction: column;
   color: $text-color;
   font-weight: 300;
@@ -45,15 +40,17 @@ $error-color: #D14334;
 }
 
 #content {
-  max-height: 70vh;
-  align-items: center;
+  height: 500px;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .text-box {
-  text-align: center;
   padding-bottom: 2rem;
   color: $text-color;
-  width: 70%;
+  width: 100%;
   margin: 0 auto;
   letter-spacing: .02rem;
 
@@ -66,16 +63,16 @@ $error-color: #D14334;
 form {
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 100%;
   margin: 0 auto;
   height: auto;
 
   input {
     width: 100%;
     height: auto;
-    border: 1px solid $primary-color;
-    background-color: #fff;
-    border-radius: 5px;
+    border: none;
+    background-color: rgba(0, 0, 0, .04);
+    border-radius: 10px;
     padding: 0.7em;
     margin: 1em 0 0.3em 0;
   }
@@ -88,6 +85,8 @@ form {
     padding: 1em;
     text-transform: uppercase;
     background-color: $primary-color;
+    border: none;
+    border-radius: 20px;
     color: #fff;
     font-size: 14px;
     font-weight: 700;
@@ -96,10 +95,10 @@ form {
   .item {
     display: flex;
     flex-direction: column;
-    height: 17vh;
+    height: 80px;
 
     span.error-msg {
-      color: red;
+      color: $error-color;
       font-size: 11px;
     }
   }

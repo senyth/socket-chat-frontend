@@ -19,7 +19,7 @@ export class ChatComponent implements OnInit {
   loadedAllChats = false;
   currentUserId: string;
   @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
-  @ViewChild('scrollMe', {static: false}) scrollDiv: ElementRef;
+  @ViewChild('scrollMe', {read: ElementRef, static: false}) scrollDiv: ElementRef;
 
   // keyboard listener for "Enter"
   @HostListener('document:keypress', ['$event'])
@@ -41,7 +41,11 @@ export class ChatComponent implements OnInit {
       console.log(this.chatArray);
       // this.isTyping = false;
 
-      this.scrollToBottom(this.scrollDiv.nativeElement.scrollHeight);
+      setTimeout(() => {
+        this.scrollToBottom(this.scrollDiv.nativeElement.scrollHeight);
+      });
+
+      
     });
   }
 
@@ -67,7 +71,11 @@ export class ChatComponent implements OnInit {
       (res: APIResponse) => {
         if (res.success) {
           this.chatArray = res.data;
-          console.log(this.chatArray);
+          // console.log(this.chatArray);
+          // this.scrollToBottom();
+          setTimeout(() => {
+            this.scrollToBottom(this.scrollDiv.nativeElement.scrollHeight);
+          });
         }
         this.loadedAllChats = true;
       },
@@ -83,8 +91,22 @@ export class ChatComponent implements OnInit {
    );
   }
 
+//   scrollToBottom(): void {
+//     try {
+//       console.log(this.scrollDiv.nativeElement.scrollHeight);
+//         this.scrollDiv.nativeElement.scrollTop = this.scrollDiv.nativeElement.scrollHeight;
+//     } catch(err) { }                 
+// }
+
+/**
+   * Scroll the page based on the scroll height
+   * @param         yScrollHeight - height
+   * @return        none
+   */
   scrollToBottom(yScrollHeight: number) {
+    console.log(yScrollHeight);
     this.componentRef.directiveRef.scrollTo(0, yScrollHeight, 500);
+    this.scrollDiv.nativeElement.scrollTop = this.scrollDiv.nativeElement.scrollHeight;
   }
 
   sendMessage() {
