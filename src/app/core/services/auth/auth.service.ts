@@ -29,9 +29,8 @@ export class AuthService {
     let ret = false;
     const token = localStorage.getItem('id_token');
 
-    console.log(token);
-
-    if (token != null && token !== undefined) {
+    if (token !== null && token !== undefined) {
+      console.log(token);
       ret = moment().isBefore(this.jwtHelper.getTokenExpirationDate(token));
 
       console.log('ret: ' + ret);
@@ -57,7 +56,7 @@ export class AuthService {
   authenticate(user: User): Observable<APIResponse> {
     return this.api.post(`/auth/users/authenticate`, {credentials: user})
     .pipe(tap((res: APIResponse) => {
-      if (res.success) {
+      if (res.data.success) {
         localStorage.setItem('id_token', res.data.token);
         localStorage.setItem('username', res.data.user.username);
         localStorage.setItem('user_id', res.data.user._id);

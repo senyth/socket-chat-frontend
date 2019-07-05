@@ -70,15 +70,14 @@ export class LoginComponent implements OnInit {
 
     this.authService.authenticate(user).subscribe(
       (res: APIResponse) => {
-        console.log(res);
-        if (res.success) {
-          console.log('true');
+        if (res.data.success) {
           this.router.navigate(['/']); // let user access the system if credentials are correct
         } else {
           alert(ValidationMessages.invalidLogin);
         }
       },
       (err: HttpErrorResponse) => {
+        console.log(err);
         if (err.error instanceof Error) {
           alert('An error occurred: ' + err.error.message);
         } else {
