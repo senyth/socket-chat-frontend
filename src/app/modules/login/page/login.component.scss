@@ -4,35 +4,19 @@ Developer:      Babie Entoma
 Date:           06/29/2019
 -------------------------------------------------------------- */
 
-// primary:
-//  #028F76
-// #005F6B or #008C9E
-
-// error:
-// #D14334
-
-// text:
-// #1C2130
-// #343838
-
 @import 'src/sass/variables';
-
 
 #wrapper {
   width: 100%;
   height: 100%;
-  // top: 0;
-  // left: 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
-  // justify-content: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  // display: flex;
   flex-direction: column;
   color: $text-color;
   font-weight: 300;
@@ -48,7 +32,7 @@ Date:           06/29/2019
 }
 
 .text-box {
-  padding-bottom: 2rem;
+  padding-top: 1em;
   color: $text-color;
   width: 100%;
   margin: 0 auto;
@@ -58,6 +42,15 @@ Date:           06/29/2019
     font-size: 11px;
   }
   
+}
+
+#invalid-credentials-wrapper {
+  padding: 1em;
+  background-color: lighten($error-color, 40%);
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid lighten($error-color, 20%);
+  margin-bottom: 1.5em;
 }
 
 form {
@@ -71,7 +64,7 @@ form {
     width: 100%;
     height: auto;
     border: none;
-    background-color: rgba(0, 0, 0, .04);
+    background-color: $gray-bg-color;
     border-radius: 10px;
     padding: 0.7em;
     margin: 1em 0 0.3em 0;
@@ -90,51 +83,16 @@ form {
     color: #fff;
     font-size: 14px;
     font-weight: 700;
-}
+  }
 
   .item {
     display: flex;
     flex-direction: column;
     height: 80px;
-
-    span.error-msg {
-      color: $error-color;
-      font-size: 11px;
-    }
   }
 }
 
-/* Fluid typography */
-// @mixin responsive-font($responsive, $min, $max: false, $fallback: false) {
-//     $responsive-unitless: $responsive / ($responsive - $responsive + 1);
-//     $dimension: if(unit($responsive) == 'vh', 'height', 'width');
-//     $min-breakpoint: $min / $responsive-unitless * 100;
-    
-//     @media (max-#{$dimension}: #{$min-breakpoint}) {
-//       font-size: $min;
-//       line-height: 1.3;
-//     }
-    
-//     @if $max {
-//       $max-breakpoint: $max / $responsive-unitless * 100;
-      
-//       @media (min-#{$dimension}: #{$max-breakpoint}) {
-//         font-size: $max;
-//         line-height: 1.5;
-//       }
-//     }
-    
-//     @if $fallback {
-//       font-size: $fallback;
-//     }
-    
-//     font-size: $responsive;
-//   }
-
-//   .text-box {
-//     font-weight: 300;
-//     color: $text-color;
-//     @include responsive-font(2vw, 12px, 16px);
-//   }
-
-  
+.error-msg {
+  color: $error-color;
+  font-size: 11px;
+}

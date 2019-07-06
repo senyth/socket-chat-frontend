@@ -8,11 +8,12 @@ import { Chat } from 'src/app/core/models/chat';
 })
 export class ChatItemComponent implements OnInit {
   @Input() chat: Chat;
+  currentUserId: string;
 
   constructor() { }
 
   ngOnInit() {
-
+    this.currentUserId = localStorage.getItem('user_id');
   }
 
 }

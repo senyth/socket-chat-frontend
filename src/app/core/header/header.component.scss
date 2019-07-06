@@ -6,7 +6,8 @@
     display: flex;
     align-items: center;
     background-color: $bg-color;
-    border-bottom: 1px solid $primary-color;
+    border-bottom: 1px solid #cccccc;
+    box-shadow: 0px 1px 5px #cccccc;
     color: $text-color;
 
     h3 {
@@ -14,7 +15,19 @@
         text-align: center;
     }
 
-    button {
-        align-self: flex-end;
-    }
+    
+}
+
+button {
+    // display: float;
+    // float: right;
+    margin: 20px 5% 0 0;
+    border: none;
+    color: $primary-color;
+    right: 0;
+    top: 0;
+    position: absolute;
+    background-color: $bg-color;
+    color: $primary-color;
+    font-weight: bold;
 }

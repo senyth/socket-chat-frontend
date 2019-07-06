@@ -22,8 +22,9 @@ import { APIResponse } from 'src/app/core/models/api-response';
 
 export class LoginComponent implements OnInit {
   @Input() checked = false;
-  loginForm: FormGroup; // login form variable
-  validationMessage = ValidationMessages; // contains the login validation messages
+  loginForm: FormGroup;
+  validationMessage = ValidationMessages;
+  invalidCredentials = false;
 
   // keyboard listener for "Enter"
   @HostListener('document:keypress', ['$event'])
@@ -62,31 +63,39 @@ export class LoginComponent implements OnInit {
    * @author        Babie Entoma
    */
   public authenticate() {
-    const formVal = this.loginForm.value;
-    const user: User = {
-      username: formVal.username,
-      password: formVal.password
-    };
+    this.loginForm.controls['username'].markAsTouched();
+    this.loginForm.controls['password'].markAsTouched();
 
-    this.authService.authenticate(user).subscribe(
-      (res: APIResponse) => {
-        if (res.data.success) {
-          this.router.navigate(['/']); // let user access the system if credentials are correct
-        } else {
-          alert(ValidationMessages.invalidLogin);
-        }
-      },
-      (err: HttpErrorResponse) => {
-        console.log(err);
-        if (err.error instanceof Error) {
-          alert('An error occurred: ' + err.error.message);
-        } else {
-          alert(`Backend returned code ${err.status} body was: ${err.error}`);
+    if (this.loginForm.valid) {
+      const formVal = this.loginForm.value;
+      const user: User = {
+        username: formVal.username,
+        password: formVal.password
+      };
 
-          this.router.navigate(['/login']);
-        }
-     }
-   );
+      this.authService.authenticate(user).subscribe(
+        (res: APIResponse) => {
+          if (res.data.success) {
+            this.router.navigate(['/']); // let user access the system if credentials are correct
+          } else {
+            // alert(ValidationMessages.invalidLogin);
+            this.invalidCredentials = true;
+          }
+        },
+        (err: HttpErrorResponse) => {
+          console.log(err);
+          if (err.error instanceof Error) {
+            alert('An error occurred: ' + err.error.message);
+          } else {
+            alert(`Backend returned code ${err.status} body was: ${err.error}`);
+  
+            this.router.navigate(['/login']);
+          }
+       }
+     );
+    }
+
+    
 
   }
 

@@ -1,20 +1,23 @@
 <div id="wrapper">
   <div id="content">
+    <div id="invalid-credentials-wrapper" *ngIf="invalidCredentials">
+      <p class="error-msg">Incorrect username or password.</p>
+    </div>
     <form class="login-form-container align-center" [formGroup]="loginForm">
       <div class="item">
-        <input required formControlName="username" />      
+        <input required formControlName="username" placeholder="username" />      
         <span *ngIf="loginForm.controls['username'].errors && (loginForm.controls['username'].touched || !loginForm.controls['username'].pristine)" class="error-msg">
           {{validationMessage.username.required}}
         </span>
       </div>
       <div class="item">
-        <input required type="password" formControlName="password" />
+        <input required type="password" formControlName="password" placeholder="password" />
         <span *ngIf="loginForm.controls['password'].errors && (loginForm.controls['password'].touched || !loginForm.controls['password'].pristine)" class="error-msg">
           {{validationMessage.password.required}}
         </span>
       </div>
     
-      <button class="login-button" [disabled]="loginForm.invalid" (click)="authenticate()">Sign up / Log in</button>
+      <button class="login-button" (click)="authenticate()">Sign up / Log in</button>
     </form>
 
     <div class="text-box">

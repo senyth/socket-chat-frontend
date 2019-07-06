@@ -17,17 +17,20 @@ export class ChatComponent implements OnInit {
   chatArray = [];
   chatForm: FormGroup;
   loadedAllChats = false;
-  currentUserId: string;
+  
   @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
   @ViewChild('scrollMe', {read: ElementRef, static: false}) scrollDiv: ElementRef;
+  @ViewChild('searchInput', {read: ElementRef, static: false}) searchInput: ElementRef;
 
   // keyboard listener for "Enter"
-  @HostListener('document:keypress', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.key === 'Enter' && this.chatForm.valid) {
-        this.sendMessage();
-    }
-  }
+  // @HostListener('document:keypress', ['$event'])
+  // handleKeyboardEvent(event: KeyboardEvent) {
+  //   console.log(this.chatForm);
+
+  //   if (event.key === 'Enter') {
+  //       this.sendMessage();
+  //   }
+  // }
 
 
   constructor(
@@ -61,7 +64,6 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.currentUserId = localStorage.getItem('user_id');
     this.populateChat();
     this.createForm();
   }
@@ -71,8 +73,6 @@ export class ChatComponent implements OnInit {
       (res: APIResponse) => {
         if (res.success) {
           this.chatArray = res.data;
-          // console.log(this.chatArray);
-          // this.scrollToBottom();
           setTimeout(() => {
             this.scrollToBottom(this.scrollDiv.nativeElement.scrollHeight);
           });
@@ -91,36 +91,34 @@ export class ChatComponent implements OnInit {
    );
   }
 
-//   scrollToBottom(): void {
-//     try {
-//       console.log(this.scrollDiv.nativeElement.scrollHeight);
-//         this.scrollDiv.nativeElement.scrollTop = this.scrollDiv.nativeElement.scrollHeight;
-//     } catch(err) { }                 
-// }
-
 /**
    * Scroll the page based on the scroll height
    * @param         yScrollHeight - height
    * @return        none
    */
   scrollToBottom(yScrollHeight: number) {
-    console.log(yScrollHeight);
     this.componentRef.directiveRef.scrollTo(0, yScrollHeight, 500);
-    this.scrollDiv.nativeElement.scrollTop = this.scrollDiv.nativeElement.scrollHeight;
   }
 
   sendMessage() {
-    console.log('send message');
+    const message = this.chatForm.value.message;
 
-    const chat: Chat = {
-      user_id: localStorage.getItem('user_id'),
-      message: this.chatForm.value.message,
-      timestamp: new Date(),
-      dis: true
-    };
+    if (this.chatForm.valid && message.trim() !== '') {
+      const chat: Chat = {
+        user: localStorage.getItem('user_id'),
+        message: this.chatForm.value.message.trimLeft(),
+        timestamp: new Date(),
+        dis: true
+      };
+  
+      this.webSocketService.sendMessage(chat);
+    } 
 
-    this.webSocketService.sendMessage(chat);
     this.chatForm.patchValue({message: ''});
+  }
+
+  typing() {
+    this.webSocketService.typing({user: this.userService.getLoggedInUser().username});
   }
 
 }

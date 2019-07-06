@@ -1,0 +1,40 @@
+@import '../../../../../sass/variables.scss';
+
+.message {
+    max-width: 70%;
+
+   .sender {
+    margin: 0 0.8em;
+
+       span {
+        font-size: 12px;
+        color: lighten($text-color, 10%);
+       }
+   }
+
+    .chat {
+        padding: 0.6em 0.8em;
+        margin: 0.2em 0;
+        border-radius: 20px;
+        white-space: pre;
+
+        &.sent {
+            background-color: $primary-color;
+            color: #fff;
+        }
+        
+        &.received {
+            background-color: $gray-bg-color;
+            color: $text-color;
+        }
+    }
+    
+}
+
+.sent {
+    float: right;
+}
+
+.received {
+    float: left;
+}

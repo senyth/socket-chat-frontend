@@ -6,7 +6,7 @@
  */
 
 export interface Chat {
-    user_id: string;
+    user: string;
     message: string;
     timestamp: Date;
     dis: boolean;
