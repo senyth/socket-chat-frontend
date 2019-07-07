@@ -1,3 +1,5 @@
+import { User } from './user';
+
 /**
  * Name:          Chat Model
  * Description:   Model that contains the fields for chat
@@ -6,8 +8,8 @@
  */
 
 export interface Chat {
-    user: string;
+    user: User;
     message: string;
-    timestamp: Date;
-    dis: boolean;
+    timestamp?: Date;
+    dis?: boolean;
 }

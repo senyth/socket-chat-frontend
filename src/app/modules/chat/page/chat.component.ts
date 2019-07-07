@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { ChatService } from 'src/app/core/services/chat.service';
 import { APIResponse } from 'src/app/core/models/api-response';
 import { PerfectScrollbarComponent } from 'ngx-perfect-scrollbar';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { User } from 'src/app/core/models/user';
 
 @Component({
   selector: 'app-chat',
@@ -17,38 +19,39 @@ export class ChatComponent implements OnInit {
   chatArray = [];
   chatForm: FormGroup;
   loadedAllChats = false;
+  isTyping = false;
+  typingChat: Chat;
+  currentUserId: string;
   
   @ViewChild(PerfectScrollbarComponent, {static: false}) componentRef?: PerfectScrollbarComponent;
   @ViewChild('scrollMe', {read: ElementRef, static: false}) scrollDiv: ElementRef;
-  @ViewChild('searchInput', {read: ElementRef, static: false}) searchInput: ElementRef;
-
-  // keyboard listener for "Enter"
-  // @HostListener('document:keypress', ['$event'])
-  // handleKeyboardEvent(event: KeyboardEvent) {
-  //   console.log(this.chatForm);
-
-  //   if (event.key === 'Enter') {
-  //       this.sendMessage();
-  //   }
-  // }
-
 
   constructor(
     private chatService: ChatService,
     private webSocketService: WebSocketService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.webSocketService.newMessageReceived().subscribe(data => {
       this.chatArray.push(data);
-      console.log(this.chatArray);
-      // this.isTyping = false;
+ 
+      setTimeout(() => {
+        this.scrollToBottom(this.scrollDiv.nativeElement.scrollHeight);
+      });
+    });
+
+    this.webSocketService.receivedTyping().subscribe(res => {
+      this.isTyping = res.isTyping;
+
+      this.typingChat = {
+        user: res.user,
+        message: ''
+      };
 
       setTimeout(() => {
         this.scrollToBottom(this.scrollDiv.nativeElement.scrollHeight);
       });
-
-      
     });
   }
 
@@ -66,6 +69,8 @@ export class ChatComponent implements OnInit {
   ngOnInit() {
     this.populateChat();
     this.createForm();
+
+    this.currentUserId = this.authService.getLoggedInUser()._id;
   }
 
   populateChat() {
@@ -73,11 +78,11 @@ export class ChatComponent implements OnInit {
       (res: APIResponse) => {
         if (res.success) {
           this.chatArray = res.data;
+          this.loadedAllChats = true;
           setTimeout(() => {
             this.scrollToBottom(this.scrollDiv.nativeElement.scrollHeight);
           });
         }
-        this.loadedAllChats = true;
       },
       (err: HttpErrorResponse) => {
         if (err.error instanceof Error) {
@@ -105,7 +110,7 @@ export class ChatComponent implements OnInit {
 
     if (this.chatForm.valid && message.trim() !== '') {
       const chat: Chat = {
-        user: localStorage.getItem('user_id'),
+        user: this.authService.getLoggedInUser(),
         message: this.chatForm.value.message.trimLeft(),
         timestamp: new Date(),
         dis: true
@@ -115,10 +120,17 @@ export class ChatComponent implements OnInit {
     } 
 
     this.chatForm.patchValue({message: ''});
+    this.stoppedTyping();
   }
 
   typing() {
-    this.webSocketService.typing({user: this.userService.getLoggedInUser().username});
+    this.webSocketService.typing({user: this.authService.getLoggedInUser(), isTyping: true});
+  }
+
+  stoppedTyping() {
+    if (this.chatForm.value.message.trim() === '') {
+      this.webSocketService.typing({user: this.authService.getLoggedInUser(), isTyping: false});
+    }
   }
 
 }

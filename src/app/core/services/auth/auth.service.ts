@@ -30,10 +30,7 @@ export class AuthService {
     const token = localStorage.getItem('id_token');
 
     if (token !== null && token !== undefined) {
-      console.log(token);
       ret = moment().isBefore(this.jwtHelper.getTokenExpirationDate(token));
-
-      console.log('ret: ' + ret);
     }
 
     return ret;
@@ -105,14 +102,15 @@ export class AuthService {
    * @author        Babie Entoma
    */
   public logout() {
-    // localStorage.removeItem('id_token');
-
     localStorage.clear();
     this.router.navigate(['/login']);
   }
 
-  public getUserID() {
-    const token = this.decodeToken();
-    return token._id;
+  public getLoggedInUser() {
+    const user: User = {
+      username: localStorage.getItem('username'),
+      _id: localStorage.getItem('user_id')
+    };
+    return user;
   }
 }

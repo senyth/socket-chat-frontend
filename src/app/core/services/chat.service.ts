@@ -1,3 +1,9 @@
+/**
+ * Name:          Chat Service
+ * Description:   Holds all the chat-request functions to the API
+ * @author:       Babie Entoma
+ * Date:          07/01/2019
+ */
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { APIResponse } from '../models/api-response';

@@ -1,13 +1,20 @@
 <div class="message" *ngIf="chat" 
-    [class.sent]="chat.user._id === currentUserId"
-    [class.received]="chat.user._id !== currentUserId">
-<!-- <app-chat-item [chat]="chat"></app-chat-item> -->
+        [class.sent]="chat.user._id === currentUserId"
+        [class.received]="chat.user._id !== currentUserId">
+
     <div class="sender" *ngIf="chat.user._id !== currentUserId">
         <span>{{chat.user.username}}</span>
     </div>
-    <div class="chat"
-    [class.sent]="chat.user._id === currentUserId"
-    [class.received]="chat.user._id !== currentUserId">
+
+    <div class="chat" *ngIf="chat.message"
+            [class.sent]="chat.user._id === currentUserId"
+            [class.received]="chat.user._id !== currentUserId">
         <p>{{chat.message}}</p>
+    </div>
+
+    <div class="chat typing-indicator" *ngIf="typing">
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
 </div>

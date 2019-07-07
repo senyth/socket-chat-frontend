@@ -4,12 +4,24 @@
             <ng-container *ngFor="let chat of chatArray">
                 <app-chat-item [chat]="chat"></app-chat-item>
             </ng-container>
+            <div *ngIf="isTyping && currentUserId !== typingChat.user._id">
+                <app-chat-item [chat]="typingChat" [typing]="isTyping"></app-chat-item>
+            </div>
         </div>
     </perfect-scrollbar>
     <div id="chat-form-wrapper">
         <form [formGroup]="chatForm">
-            <textarea id="textarea" (keypress)="typing()" formControlName="message" placeholder="Enter message..." rows="2" (keydown.enter)="sendMessage();false" #searchInput></textarea>
-            <button (click)="sendMessage()" *ngIf="chatForm.valid">Send</button>
+            <textarea id="textarea"
+                        formControlName="message"
+                        placeholder="Enter message..." 
+                        rows="2" 
+                        (keypress)="typing()" 
+                        (keyup.backspace)="stoppedTyping()"
+                        (keyup.control.x)="stoppedTyping()" 
+                        (keyup.control.a.control.x)="stoppedTyping()" 
+                        (keydown.enter)="sendMessage();false">
+            </textarea>
+            <button (click)="sendMessage()">Send</button>
         </form>
     </div>
 </div>

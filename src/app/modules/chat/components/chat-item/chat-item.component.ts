@@ -8,6 +8,7 @@ import { Chat } from 'src/app/core/models/chat';
 })
 export class ChatItemComponent implements OnInit {
   @Input() chat: Chat;
+  @Input() typing: boolean;
   currentUserId: string;
 
   constructor() { }

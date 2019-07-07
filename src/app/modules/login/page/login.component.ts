@@ -21,9 +21,9 @@ import { APIResponse } from 'src/app/core/models/api-response';
 })
 
 export class LoginComponent implements OnInit {
-  @Input() checked = false;
   loginForm: FormGroup;
   validationMessage = ValidationMessages;
+  requestingData = false;
   invalidCredentials = false;
 
   // keyboard listener for "Enter"
@@ -63,6 +63,7 @@ export class LoginComponent implements OnInit {
    * @author        Babie Entoma
    */
   public authenticate() {
+    console.log('authenticate');
     this.loginForm.controls['username'].markAsTouched();
     this.loginForm.controls['password'].markAsTouched();
 
@@ -73,12 +74,13 @@ export class LoginComponent implements OnInit {
         password: formVal.password
       };
 
+      this.requestingData = true;
       this.authService.authenticate(user).subscribe(
         (res: APIResponse) => {
-          if (res.data.success) {
+          this.requestingData = false;
+          if (res.data.success) {  
             this.router.navigate(['/']); // let user access the system if credentials are correct
           } else {
-            // alert(ValidationMessages.invalidLogin);
             this.invalidCredentials = true;
           }
         },
@@ -94,9 +96,6 @@ export class LoginComponent implements OnInit {
        }
      );
     }
-
-    
-
   }
 
 }
