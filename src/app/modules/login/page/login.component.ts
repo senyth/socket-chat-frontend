@@ -63,7 +63,6 @@ export class LoginComponent implements OnInit {
    * @author        Babie Entoma
    */
   public authenticate() {
-    console.log('authenticate');
     this.loginForm.controls['username'].markAsTouched();
     this.loginForm.controls['password'].markAsTouched();
 
